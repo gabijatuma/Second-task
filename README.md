@@ -1,2 +1,2 @@
 # Second-task
-First version of second task, using C arrays
+First version of second task, using vectors
