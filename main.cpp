@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
-#include<cstdlib>
+#include <cstdlib>
+#include <vector>
 
 using namespace std;
 
@@ -18,18 +19,15 @@ int main()
     cin>>studk;
 
     int egz, sum;
-    int nd[100];//reiketu pakeist kazkaip i dinamine atminti kad nebutu is anksto nusakytas masyvo dydis
-    int k=1;
+    int index;
     student S[studk];
-
-    int index=1,
-            *array=new int[index];
+    vector<int> v(1);
 
     for(int ij = 0; ij < studk; ij++)
     {
 
         sum = 0;
-        index = 1;
+        index = 0;
 
         cout<<"Iveskite savo varda ir pavarde"<<endl;
         cin>>S[ij].name>>S[ij].surname;
@@ -39,16 +37,18 @@ int main()
 
 
 
+
+
         do{
             cout<<"Iveskite paazymi "<<endl;
-            cin>>array[index-1];
-            if(array[index-1]<0 || array[index - 1]>10)
-                array[index-1] = 1+(double)rand()/RAND_MAX*9;
+            cin>>v[index];
+            if(v[index]<0 || v[index]>10)
+                v[index] = 1+(double)rand()/RAND_MAX*9;
             index++;
-          }while (array[index-2]!=0);
+          }while (v[index-1]!=0);
 
-        for (int i=0;i<index-1;i++){
-	        sum+=array[i];
+        for (int i=0;i<index;i++){
+	        sum+=v[i];
             }
 
         cout<<"Iveskite savo egzamino rezultata"<<endl;
@@ -61,26 +61,27 @@ int main()
         cin>>S[ij].type;
         if(S[ij].type=='v')
         {
-            S[ij].vid = 0.6*(double)egz + 0.4*((double)sum/(double)(index-2));
+            S[ij].vid = 0.6*(double)egz + 0.4*((double)sum/(double)(index-1));
         }
         else if(S[ij].type=='m')
         {
-            for(int i = 0; i < index-3; i++)
-                for(int j = i; j < index - 2; j++)
+            for(int i = 0; i < index-2; i++)
+                for(int j = i; j < index - 1; j++)
                 {
-                    if(array[j]<array[i])
-                        swap(array[j], array[i]);
+                    if(v[j]<v[i])
+                        swap(v[j], v[i]);
                 }
 
 
 
 
-            if((index-1)%2==0)
-                S[ij].vid = (double)array[(index-3)/2]*0.4 + (double)egz*0.6;
-            else S[ij].vid = (double)(array[(index-4)/2]+array[(index-2)/2])/2*0.4 + (double)egz*0.6;
+
+            if((index)%2==0)
+                S[ij].vid = (double)v[(index-2)/2]*0.4 + (double)egz*0.6;
+            else S[ij].vid = (double)(v[(index-3)/2]+v[(index-1)/2])/2*0.4 + (double)egz*0.6;
 
         }
-        delete array;
+        //delete v;
     }
     cout<<"Pavarde             Vardas             Galutinis(vid)/Galutinis(med)"<<endl;
     cout<<"--------------------------------------------------------------------"<<endl;
@@ -92,5 +93,6 @@ int main()
         else cout<<setw(20)<<right<<S[ij].vid;
         cout<<endl;
     }
+
     return 0;
 }
