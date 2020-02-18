@@ -92,30 +92,5 @@ int main()
         else cout<<setw(20)<<right<<S[ij].vid;
         cout<<endl;
     }
-   // else goto 47;
-
-    /*
-    int n, egz, sum=0;
-    double vid;
-
-    cout<<"Iveskite savo varda ir pavarde"<<endl;
-    cin>>name>>surname;
-    cout<<name<<" "<<surname;
-    cout<<"Kiek atlikote namu darbu?"<<endl;
-    cin>>n;
-    int nd[n];
-    for(int i = 0; i < n; i++)
-    {
-        cout<<"Koks yra jusu "<<i+1<<" namu darbo ivertinimas?"<<endl;
-        cin>>nd[i];
-        sum+=nd[i];
-    }
-    cout<<"Kiek gavote is egzamino?"<<endl;
-    cin >> egz;
-
-    vid = 0.6*(double)egz + 0.4*((double)sum/(double)n);
-
-    cout<<"jusu vidurkis yra "<<vid<<endl;*/
-
     return 0;
 }
