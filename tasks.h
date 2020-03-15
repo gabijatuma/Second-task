@@ -10,6 +10,9 @@
 #include <time.h>
 #include <string>
 #include <chrono>
+#include <list>
+#include <deque>
+
 using namespace std;
 using namespace std::chrono;
 
@@ -20,14 +23,20 @@ struct student{
     };
 
 //void readrandom(char ty, int studk);
-void readfile(char ty, int k);
+void readfileV(char ty, int k);
+void readfileD(char ty, int k);
+void readfileL(char ty, int k);
 void writefile(vector<student>S, char type, int k);
+void writefileD(deque<student>S, char type, int k);
+void writefileL(list<student>S, char type, int k);
 void create (int k, char type);
+bool sorting (const student& a, const student& b);
 
 
 
 
-void readfile(char ty, int k) try
+
+void readfileV(char ty, int k) try
 {
     auto start = high_resolution_clock::now();
     ifstream fd;
@@ -48,6 +57,114 @@ void readfile(char ty, int k) try
         cnt++;
     }
 
+
+
+    int v[cnt];
+
+    for(int kk = 0; kk < k; kk++)
+    {
+        st.push_back(student());
+        fd >> st[counter].name >> st[counter].surname;
+        sum = 0;
+        index = 0;
+
+        for(int i = 0; i < cnt; i++)
+        {
+            fd >> v[i];
+            if(v[i]<0 || v[i]>10)
+                v[i] = 1+(double)rand()/RAND_MAX*9;
+            index++;
+        }
+        fd >> egz;
+        fd.ignore();
+        if(egz<0 || egz>10)
+                egz = 1+(double)rand()/RAND_MAX*9;
+
+        for (int i=0;i<cnt;i++)
+        {
+	        sum+=v[i];
+        }
+
+        if(ty=='v')
+        {
+            st[counter].vid = 0.6*(double)egz + 0.4*((double)sum/(double)(index-1));
+        }
+        else if(ty=='m')
+        {
+            for(int i = 0; i < index-2; i++)
+                for(int j = i; j < index - 1; j++)
+                {
+                    if(v[j]<v[i])
+                        swap(v[j], v[i]);
+                }
+
+            if((index)%2==0) st[counter].vid = (double)v[(index-2)/2]*0.4 + (double)egz*0.6;
+            else st[counter].vid = (double)(v[(index-3)/2]+v[(index-1)/2])/2*0.4 + (double)egz*0.6;
+
+        }
+
+        counter++;
+    }
+
+    fd.close();
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+
+    cout << k << " studentu irasu nuskaitymas i 'vector' uztruko: " <<(double)duration.count()/1000000 << " sekundziu "<<endl;
+
+        for (int i=0; i!=st.size()-2; i++)
+    {
+        for (int j = i; j!=st.size()-1; j++)
+        {
+            if(st[i].surname>st[j].surname) swap(st[i], st[j]);
+                else if (st[i].surname==st[j].surname && st[i].name> st[j].name) swap(st[i], st[j]);
+        }
+    }
+
+    writefile(st, ty, k);
+    }
+
+    else
+    {
+        throw 1;
+    }
+
+}
+
+catch(...)
+    {
+        cout<<"Reikalingas failas nebuvo rastas."<<endl;
+    }
+
+
+
+
+
+
+
+
+
+
+    void readfileD(char ty, int k) try
+{
+    auto start = high_resolution_clock::now();
+    ifstream fd;
+    string filename;
+    filename = "studentai" + to_string(k);
+    fd.open( filename.c_str() );
+    if(fd.good())
+    {
+    deque<student> st;
+
+    int egz, sum, index, counter = 0;
+    string random;
+    int cnt = -1;
+    fd >> random >> random;
+    while(random!="Egz.")
+    {
+        fd >> random;
+        cnt++;
+    }
     {
     int v[cnt];
     for(int kk = 0; kk < k; kk++)
@@ -99,9 +216,8 @@ void readfile(char ty, int k) try
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
 
-    cout << k << " studentu irasu nuskaitymas uztruko: " <<(double)duration.count()/1000000 << " sekundziu "<<endl;
+    cout << k << " studentu irasu nuskaitymas i 'deque' uztruko: " <<(double)duration.count()/1000000 << " sekundziu "<<endl;
 
-     auto startsort = high_resolution_clock::now();
         for (int i=0; i!=st.size()-2; i++)
     {
         for (int j = i; j!=st.size()-1; j++)
@@ -110,12 +226,9 @@ void readfile(char ty, int k) try
                 else if (st[i].surname==st[j].surname && st[i].name> st[j].name) swap(st[i], st[j]);
         }
     }
-    auto stopsort = high_resolution_clock::now();
-    auto durationsort = duration_cast<microseconds>(stopsort - startsort);
 
-    cout << k << " elementu rusiavimas uztruko: " <<(double)duration.count()/1000000 << " sekundziu "<<endl;
 
-    writefile(st, ty, k);
+    writefileD(st, ty, k);
     }
     }
     else
@@ -127,7 +240,7 @@ void readfile(char ty, int k) try
 
 catch(...)
     {
-        cout<<"Reikalingas failas nebuvo rastas. Bus sugeneruoti atsitiktiniai studentai"<<endl;
+        cout<<"Reikalingas failas nebuvo rastas."<<endl;
     }
 
 
@@ -138,6 +251,109 @@ catch(...)
 
 
 
+void readfileL(char ty, int k) try
+{
+    auto start = high_resolution_clock::now();
+    ifstream fd;
+    string filename;
+    filename = "studentai" + to_string(k);
+    fd.open( filename.c_str() );
+    if(fd.good())
+    {
+    list<student> st;
+
+    int egz, sum, index;
+    string random;
+    int cnt = -1;
+    fd >> random >> random;
+    while(random!="Egz.")
+    {
+        fd >> random;
+        cnt++;
+    }
+    {
+//string nm, srnm;
+    student one;
+            //st.push_back(student());
+    int v[cnt];
+    for(int kk = 0; kk < k; kk++)
+    {
+        fd >> one.name >> one.surname;
+
+        sum = 0;
+        index = 0;
+
+        for(int i = 0; i < cnt; i++)
+        {
+            fd >> v[i];
+            if(v[i]<0 || v[i]>10)
+                v[i] = 1+(double)rand()/RAND_MAX*9;
+            index++;
+        }
+        fd >> egz;
+        fd.ignore();
+        if(egz<0 || egz>10)
+                egz = 1+(double)rand()/RAND_MAX*9;
+
+        for (int i=0;i<cnt;i++)
+        {
+	        sum+=v[i];
+        }
+
+        if(ty=='v')
+        {
+            one.vid = 0.6*(double)egz + 0.4*((double)sum/(double)(index-1));
+        }
+        else if(ty=='m')
+        {
+            for(int i = 0; i < index-2; i++)
+                for(int j = i; j < index - 1; j++)
+                {
+                    if(v[j]<v[i])
+                        swap(v[j], v[i]);
+                }
+
+            if((index)%2==0) one.vid = (double)v[(index-2)/2]*0.4 + (double)egz*0.6;
+            else one.vid = (double)(v[(index-3)/2]+v[(index-1)/2])/2*0.4 + (double)egz*0.6;
+
+        }
+        st.push_back(one);
+    }
+
+    fd.close();
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+
+    cout << k << " studentu irasu nuskaitymas i 'list' uztruko: " <<(double)duration.count()/1000000 << " sekundziu "<<endl;
+
+
+    st.sort(sorting);
+
+    writefileL(st, ty, k);
+    }
+    }
+    else
+    {
+        throw 1;
+    }
+
+}
+
+catch(...)
+    {
+        cout<<"Reikalingas failas nebuvo rastas."<<endl;
+    }
+
+
+
+
+
+
+
+bool sorting (const student& a, const student& b)
+{
+    return a.name > b.name;
+}
 
 
 
@@ -148,9 +364,9 @@ void writefile(vector<student>S, char type, int k)
     ofstream frg;
     ofstream frb;
     string filename;
-    filename = "gerieji" + to_string(k);
+    filename = "VECTORgerieji" + to_string(k);
     frg.open( filename.c_str() );
-    filename = "blogieji" + to_string(k);
+    filename = "VECTORblogieji" + to_string(k);
     frb.open( filename.c_str() );
 
 
@@ -192,9 +408,59 @@ void writefile(vector<student>S, char type, int k)
 
 
 
+void writefileD(deque<student>S, char type, int k)
+{
+
+    ofstream frg;
+    ofstream frb;
+    string filename;
+    filename = "DEQUEgerieji" + to_string(k);
+    frg.open( filename.c_str() );
+    filename = "DEQUEblogieji" + to_string(k);
+    frb.open( filename.c_str() );
+
+
+
+
+    frg<<"Pavarde             Vardas             Galutinis(vid.) Galutinis(med.)"<<endl;
+    frg<<"--------------------------------------------------------------------"<<endl;
+
+    frb<<"Pavarde             Vardas             Galutinis(vid.) Galutinis(med.)"<<endl;
+    frb<<"--------------------------------------------------------------------"<<endl;
+
+    auto start = high_resolution_clock::now();
+    for(auto ij: S)
+    {
+       if(ij.vid < 5.0)
+       {
+        frb<<setw(20)<<left<<ij.surname;
+        frb<<setw(20)<<left<<ij.name;
+        frb<<setw(20)<<fixed<<setprecision(2)<<left<<ij.vid;
+        frb<<endl;
+       }
+       else
+       {
+        frg<<setw(20)<<left<<ij.surname;
+        frg<<setw(20)<<left<<ij.name;
+        frg<<setw(20)<<fixed<<setprecision(2)<<left<<ij.vid;
+        frg<<endl;
+       }
+
+
+
+    }
+    frg.close();
+    frb.close();
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << S.size() << " studentu irasymas i atitinkamus failus uztruko: " <<(double)duration.count()/1000000 << " sekundziu "<<endl;
+}
+
+
+
+
 void create (int k, char type)
 {
-    auto start = high_resolution_clock::now();
     ofstream f;
     string filename;
     filename = "studentai" + to_string(k);
@@ -214,12 +480,63 @@ void create (int k, char type)
 
     }
     f.close();
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
-    cout << k << " studentu failo kurimas uztruko: " <<(double)duration.count()/1000000 << " sekundziu "<<endl;
-    readfile(type, k);
+
 
 }
+
+
+
+void writefileL(list<student>S, char type, int k)
+{
+
+    ofstream frg;
+    ofstream frb;
+    string filename;
+    filename = "LISTgerieji" + to_string(k);
+    frg.open( filename.c_str() );
+    filename = "LISTblogieji" + to_string(k);
+    frb.open( filename.c_str() );
+
+
+
+
+    frg<<"Pavarde             Vardas             Galutinis(vid.) Galutinis(med.)"<<endl;
+    frg<<"--------------------------------------------------------------------"<<endl;
+
+    frb<<"Pavarde             Vardas             Galutinis(vid.) Galutinis(med.)"<<endl;
+    frb<<"--------------------------------------------------------------------"<<endl;
+
+    auto start = high_resolution_clock::now();
+    for(auto ij: S)
+    {
+       if(ij.vid < 5.0)
+       {
+        frb<<setw(20)<<left<<ij.surname;
+        frb<<setw(20)<<left<<ij.name;
+        frb<<setw(20)<<fixed<<setprecision(2)<<left<<ij.vid;
+        frb<<endl;
+       }
+       else
+       {
+        frg<<setw(20)<<left<<ij.surname;
+        frg<<setw(20)<<left<<ij.name;
+        frg<<setw(20)<<fixed<<setprecision(2)<<left<<ij.vid;
+        frg<<endl;
+       }
+
+
+
+    }
+    frg.close();
+    frb.close();
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << S.size() << " studentu irasymas i atitinkamus failus uztruko: " <<(double)duration.count()/1000000 << " sekundziu "<<endl;
+}
+
+
+
+
 
 
 
