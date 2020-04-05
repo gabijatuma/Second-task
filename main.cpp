@@ -20,20 +20,14 @@ int main()
 
 
     char type = 'v';
-    int kiekis = 1000;
-    cout<<"iveskite studentu kieki. 1000, 10000, 100000, 1000000 arba 10000000"<<endl;
-    cin>>kiekis;
-    if(kiekis<1000 && kiekis > 10000000 && kiekis%10 !=0)
-        kiekis = 1000;
-
+    for(int kiekis = 1000; kiekis <= 10000000; kiekis*=10)
+    {
     create(kiekis, type);
     readfileV(type, kiekis);
     readfileD(type, kiekis);
     readfileL(type, kiekis);
+    cout<<endl;
+    }
 
     return 0;
 }
-
-
-
-
