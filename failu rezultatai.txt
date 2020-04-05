@@ -18,3 +18,11 @@ list: nuskaitymas - 22.2503s rusiavimas - 8.81268s
 vector: nuskaitymas - -s rusiavimas - -s
 deque: nuskaitymas - -s rusiavimas - -s
 list: nuskaitymas - 259.144s rusiavimas - 86.7512s
+
+po savo budo, kuris buvo tiesiog irasyti duomenis i 2 skirtingus atitinkamus failus, isbandziau 2 kitus budus.
+vienas is ju: surasyti duomenis i atskirus naujus konteinerius. Taip dirbant yra naudojama vos ne dvigubai daugiau atminties,
+nes yra papildomos studentu duomenu kopijos. Taciau sia budas isskirste duomenis greiciausiai. Kai dirbau su 1000 studentu sarasu
+laikas buvo 0 sekundziu, vadinasi tai ivyko taip greitai kad net nesugebejo to apskaiciuoti.
+
+kitas budas buvo perrasyti tik vienos grupes asmenis i nauja konteineri, o kitus tiesiog istrinti. tai uztruko ilgiau, taciau
+viestiek buvo atlikta greiciau nei mano pradinis paskirstymo budas.
