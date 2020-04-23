@@ -23,7 +23,7 @@ void readfileV(char ty, int k) try
     {
     vector<student> st;
 
-    int egz, sum, index, counter = 0;
+    int egz, sum, index;
     string random;
     int cnt = -1;
     fd >> random >> random;
@@ -32,15 +32,15 @@ void readfileV(char ty, int k) try
         fd >> random;
         cnt++;
     }
-
-
-
-    int v[cnt];
-
-    for(int kk = 0; kk < k; kk++)
     {
-        st.push_back(student());
-        fd >> st[counter].name >> st[counter].surname;
+//string nm, srnm;
+    student one;
+            //st.push_back(student());
+    int v[cnt];
+    for(long int kk = 0; kk < k; kk++)
+    {
+        fd >> one.name >> one.surname;
+
         sum = 0;
         index = 0;
 
@@ -63,7 +63,7 @@ void readfileV(char ty, int k) try
 
         if(ty=='v')
         {
-            st[counter].vid = 0.6*(double)egz + 0.4*((double)sum/(double)(index-1));
+            one.vid = 0.6*(double)egz + 0.4*((double)sum/(double)(index-1));
         }
         else if(ty=='m')
         {
@@ -74,12 +74,11 @@ void readfileV(char ty, int k) try
                         swap(v[j], v[i]);
                 }
 
-            if((index)%2==0) st[counter].vid = (double)v[(index-2)/2]*0.4 + (double)egz*0.6;
-            else st[counter].vid = (double)(v[(index-3)/2]+v[(index-1)/2])/2*0.4 + (double)egz*0.6;
+            if((index)%2==0) one.vid = (double)v[(index-2)/2]*0.4 + (double)egz*0.6;
+            else one.vid = (double)(v[(index-3)/2]+v[(index-1)/2])/2*0.4 + (double)egz*0.6;
 
         }
-
-        counter++;
+        st.push_back(one);
     }
 
     fd.close();
@@ -88,20 +87,16 @@ void readfileV(char ty, int k) try
 
     cout << k << " studentu irasu nuskaitymas i 'vector' uztruko: " <<(double)duration.count()/1000000 << " sekundziu "<<endl;
 
-        for (int i=0; i!=st.size()-2; i++)
-    {
-        for (int j = i; j!=st.size()-1; j++)
-        {
-            if(st[i].surname>st[j].surname) swap(st[i], st[j]);
-                else if (st[i].surname==st[j].surname && st[i].name> st[j].name) swap(st[i], st[j]);
-        }
-    }
+    sort (st.begin(), st.end(), sorting);
+
+
+
 
     writefile(st, ty, k);
     writetwoV(st, k);
     writedeleteV(st, k);
     }
-
+    }
     else
     {
         throw 1;
@@ -134,7 +129,7 @@ catch(...)
     {
     deque<student> st;
 
-    int egz, sum, index, counter = 0;
+    int egz, sum, index;
     string random;
     int cnt = -1;
     fd >> random >> random;
@@ -144,11 +139,14 @@ catch(...)
         cnt++;
     }
     {
+//string nm, srnm;
+    student one;
+            //st.push_back(student());
     int v[cnt];
     for(int kk = 0; kk < k; kk++)
     {
-        st.push_back(student());
-        fd >> st[counter].name >> st[counter].surname;
+        fd >> one.name >> one.surname;
+
         sum = 0;
         index = 0;
 
@@ -171,7 +169,7 @@ catch(...)
 
         if(ty=='v')
         {
-            st[counter].vid = 0.6*(double)egz + 0.4*((double)sum/(double)(index-1));
+            one.vid = 0.6*(double)egz + 0.4*((double)sum/(double)(index-1));
         }
         else if(ty=='m')
         {
@@ -182,12 +180,11 @@ catch(...)
                         swap(v[j], v[i]);
                 }
 
-            if((index)%2==0) st[counter].vid = (double)v[(index-2)/2]*0.4 + (double)egz*0.6;
-            else st[counter].vid = (double)(v[(index-3)/2]+v[(index-1)/2])/2*0.4 + (double)egz*0.6;
+            if((index)%2==0) one.vid = (double)v[(index-2)/2]*0.4 + (double)egz*0.6;
+            else one.vid = (double)(v[(index-3)/2]+v[(index-1)/2])/2*0.4 + (double)egz*0.6;
 
         }
-
-        counter++;
+        st.push_back(one);
     }
 
     fd.close();
@@ -196,15 +193,7 @@ catch(...)
 
     cout << k << " studentu irasu nuskaitymas i 'deque' uztruko: " <<(double)duration.count()/1000000 << " sekundziu "<<endl;
 
-        for (int i=0; i!=st.size()-2; i++)
-    {
-        for (int j = i; j!=st.size()-1; j++)
-        {
-            if(st[i].surname>st[j].surname) swap(st[i], st[j]);
-                else if (st[i].surname==st[j].surname && st[i].name> st[j].name) swap(st[i], st[j]);
-        }
-    }
-
+    sort (st.begin(), st.end(), sorting);
 
     writefileD(st, ty, k);
     writetwoD(st, k);
@@ -307,11 +296,15 @@ void readfileL(char ty, int k) try
     cout << k << " studentu irasu nuskaitymas i 'list' uztruko: " <<(double)duration.count()/1000000 << " sekundziu "<<endl;
 
 
-    st.sort(sorting);
+    /*st.sort(sorting);
+    student *ptr = &st.front();
+    cout<< ptr->vid<<endl;
+    cout<<ptr<<endl;*/
 
     writefileL(st, ty, k);
     writetwoL(st, k);
     writedeleteL(st, k);
+
     }
     }
     else
@@ -334,7 +327,7 @@ catch(...)
 
 bool sorting (const student& a, const student& b)
 {
-    return a.name > b.name;
+    return a.vid > b.vid;
 }
 
 
@@ -435,7 +428,7 @@ void writedeleteV(vector<student>S, int k)
     {
         if (itri->vid < 5)
         {
-            S.erase(itri++);
+            S.erase(itri);
         }
 
         else
@@ -542,19 +535,19 @@ void writedeleteD(deque<student>S, int k)
 
 
     }
-    deque<student>::iterator itri = S.begin();
+    deque<student>::iterator itri = S.begin();///////////
     while (  itri != S.end() )
     {
         if (itri->vid < 5)
         {
-            S.erase(itri++);
+            S.erase(itri);
         }
 
         else
         {
             ++itri;
         }
-    }
+    }///////////////////
 
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
@@ -587,8 +580,6 @@ void create (int k, char type)
 
 
 }
-
-
 
 void writefileL(list<student>S, char type, int k)
 {
@@ -641,6 +632,7 @@ void writefileL(list<student>S, char type, int k)
 
 void writetwoL(list<student>S, int k)
 {
+
 
 
     list<student> bad;
