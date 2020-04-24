@@ -7,3 +7,6 @@ It shows that the best results are achieved with a list container and the worst 
 Timewise is best to split data into 2 new containers.
 
 computer that got these results has 8GB of RAM, 2.39GHz processor and 1TB HDD
+![deque](https://user-images.githubusercontent.com/60934852/80212855-ef5b7a00-8640-11ea-87cf-c7c72233ce82.png)
+![list_struct](https://user-images.githubusercontent.com/60934852/80212856-eff41080-8640-11ea-8c15-515b34d1a829.png)
+![vector](https://user-images.githubusercontent.com/60934852/80212857-eff41080-8640-11ea-9a34-3f05c188c594.png)
